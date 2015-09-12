@@ -1,5 +1,7 @@
 ## Interactivity && Graphics && Sound
 
+### Due Date : October 6
+
 ### Goals:
 
 1. See, Hear, Respond
