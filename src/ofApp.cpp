@@ -14,7 +14,6 @@ void ofApp::setup(){
     currentCircle.reset();
 
     bump = shared_ptr<Balloon>(new Balloon(ofGetWidth()/2, ofGetHeight(), ofGetWidth()/4, physics));
-    // bump.setup(physics.getWorld(), ofGetWidth()/2, ofGetHeight(), ofGetWidth()/4);
 
     soundSustained = false;
 }
@@ -29,7 +28,6 @@ void ofApp::update(){
     soundSustained = false;
 
     for (int i = 0; i < 16; i++){
-
         if (audioData[i] > 0.7){
             //to account for small bits of sound
             soundSustained = true;
@@ -43,7 +41,7 @@ void ofApp::update(){
             }
             currentCircle->inflate(0.5);
         }
-    }    
+    }
     if (!soundSustained){
         if (currentCircle){
             shared_ptr<ofxBox2dJoint> joint(new ofxBox2dJoint);
@@ -51,7 +49,6 @@ void ofApp::update(){
         }
         currentCircle.reset();
     }
-
     delete[] audioData;
 }
 
@@ -113,7 +110,7 @@ void ofApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
 
