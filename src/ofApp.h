@@ -1,6 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxBox2d.h"
+#include "ofxFFTLive.h"
+#include "Balloon.h"
 
 class ofApp : public ofBaseApp{
 
@@ -18,5 +21,16 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+		void createNewCircle(float x, float y, float r);
+
+		shared_ptr<Balloon> bump;
+		bool soundSustained;
+		shared_ptr<Balloon> currentCircle;
+
+		ofxBox2d physics;
+		ofxFFTLive fftLive;
+
+		vector<shared_ptr<Balloon> > objects;
+		vector<shared_ptr<ofxBox2dJoint> > joints;
 		
 };
