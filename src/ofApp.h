@@ -27,10 +27,11 @@ class ofApp : public ofBaseApp{
 		bool soundSustained;
 		shared_ptr<Balloon> currentCircle;
 
+		ofLight pointLight;
 		ofxBox2d physics;
 		ofxFFTLive fftLive;
 
 		vector<shared_ptr<Balloon> > objects;
 		vector<shared_ptr<ofxBox2dJoint> > joints;
-		
+
 };

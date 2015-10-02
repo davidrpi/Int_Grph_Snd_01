@@ -1,8 +1,8 @@
 #include "Balloon.h"
 
-Balloon::Balloon(float x, float y, float r, ofxBox2d &physics){
+Balloon::Balloon(float x, float y, float r, float density, ofxBox2d &physics){
     shape = shared_ptr<ofxBox2dCircle>(new ofxBox2dCircle());
-    shape->setPhysics(3.0, 0.53, .1);
+    shape->setPhysics(density, 0.53, .1);
     shape->setMassFromShape = true;
     shape->setup(physics.getWorld(), x, y, r);
     mesh = ofMesh::sphere(r);
@@ -30,4 +30,5 @@ void Balloon::draw(){
 void Balloon::inflate(float v){
     shape->setRadius(shape->getRadius() + v);
     radius += v;
+    // shape->body->setMass(4.0/3.0 * 3.14159 * radius * radius * radius);
 }

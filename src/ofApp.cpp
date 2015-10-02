@@ -4,16 +4,23 @@
 void ofApp::setup(){
     ofSetFrameRate(60);
     ofSetDepthTest(true);
+    ofBackground(ofColor::midnightBlue);
 
     physics.init();
     physics.setGravity(0, -9.8);
-    physics.createBounds();
+    // physics.createBounds();
     physics.setFPS(60);
     fftLive.setMirrorData(false);
     fftLive.setup();
     currentCircle.reset();
 
-    bump = shared_ptr<Balloon>(new Balloon(ofGetWidth()/2, ofGetHeight(), ofGetWidth()/4, physics));
+    bump = shared_ptr<Balloon>(new Balloon(ofGetWidth()/2, ofGetHeight(), ofGetWidth()/4, 0.0, physics));
+
+
+    ofEnableLighting();
+    pointLight.setPointLight();
+    pointLight.setAttenuation(0.9f);
+    pointLight.setPosition(bump->getShape()->getPosition());
 
     soundSustained = false;
 }
@@ -34,7 +41,7 @@ void ofApp::update(){
         }
         if (audioData[i] > 0.9){
             if (!currentCircle){
-                shared_ptr<Balloon> b(new Balloon(ofRandom(0, ofGetWidth()), ofGetHeight()/2, 1, physics));
+                shared_ptr<Balloon> b(new Balloon(ofRandom(0, ofGetWidth()), 3*ofGetHeight()/4, 1, 3.0, physics));
                 objects.push_back(b);
                 currentCircle = b;
                 //cout << "NEW BALLOON!" << endl;
@@ -56,6 +63,8 @@ void ofApp::update(){
 void ofApp::draw(){
     //fftLive.draw();
 
+    pointLight.enable();
+
     for (int i = 0; i < objects.size(); i++){
         objects[i]->draw();
     }
@@ -67,10 +76,22 @@ void ofApp::draw(){
 
     physics.drawGround();
 
+    pointLight.disable();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    switch (key) {
+        case ' ':
+            physics.setGravity(0,0);
+            break;
+        case OF_KEY_UP:
+            physics.setGravity(0, -9.8);
+            break;
+        case OF_KEY_DOWN:
+            physics.setGravity(0, 9.8);
+            break;
+    }
 
 }
 

@@ -4,11 +4,11 @@
 
 class Balloon{
 public:
-    Balloon(float x, float y, float r, ofxBox2d &physics);
+    Balloon(float x, float y, float r, float density, ofxBox2d &physics);
     ~Balloon();
 
     shared_ptr<ofxBox2dCircle> getShape() {return shape;}
-    void inflate(float v);    
+    void inflate(float v);
     void draw();
 
 private:
