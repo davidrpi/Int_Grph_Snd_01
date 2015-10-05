@@ -1,0 +1,14 @@
+Interactivity && Graphics && Sound
+Due Date : October 6
+Breakdown
+Leying Hu
+
+I really love the collision of pink and tiffany blue. So before coming up with an idea, I have already chosen the two base colors for my project. Last semester, I have created a small processing project with blue circles and pink background. This time, I want do something with rectangles.
+
+The rectangles should be created while dragging the mouse. To make it not so simple, I want this rectangles rotated so that they can form a pattern.
+
+The rectangles all have same sizes and similar light green colors at first. As soon as there is a sound, they will enlarge and change colors ranging from light green and dark blue. Here, I require the addon, ofxFFT. The positions of these rectangles may trigger four sound effects. I downloaded four free sound effects from "http://freesound.org". When rectangles touch the upper bound, it will trigger "load_bomb_kick.wav". When rectangles touch the lower bound, it will trigger "load_alien_bomb_timer.wav". When rectangles touch the left bound, it will trigger "load_wire.wav". When rectangles touch the right bound, it will trigger "load_walking.wav".
+
+Also I want the screen to show the rectangles are enlarged whether by sound input or sound effects. I created a volume display. It will only work when sound effects triggered.
+
+I load two fonts to write on the screen, displaying the project name, my name and instructions of evolving.
