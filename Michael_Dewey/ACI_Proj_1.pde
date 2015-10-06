@@ -19,7 +19,7 @@ int radius = 100;
 void setup()
 {
   // project settings
-  //size(600, 600);
+  //size(800, 450);  best in 1600x900
   fullScreen();
   frameRate(60);
 
@@ -268,8 +268,8 @@ class World
     mrRolls.acceleration.x = 0;
     mrRolls.acceleration.y = 0;
 
-    if (key_w || key_up) mrRolls.acceleration.y    = -speed;
-    if (key_s || key_down) mrRolls.acceleration.y  = speed;
+    //if (key_w || key_up) mrRolls.acceleration.y    = -speed;
+    //if (key_s || key_down) mrRolls.acceleration.y  = speed;
     if (key_a || key_left) mrRolls.acceleration.x  = -speed;
     if (key_d || key_right) mrRolls.acceleration.x = speed;
 
