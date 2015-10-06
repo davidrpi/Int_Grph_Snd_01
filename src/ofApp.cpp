@@ -4,22 +4,34 @@
 void ofApp::setup(){
     ofSetFrameRate(60);
     ofSetDepthTest(true);
-
+    ofBackground(ofColor(15, 8, 37));
     physics.init();
     physics.setGravity(0, -9.8);
-    physics.createBounds();
+    // physics.createBounds();
     physics.setFPS(60);
     fftLive.setMirrorData(false);
     fftLive.setup();
     currentCircle.reset();
 
-    bump = shared_ptr<Balloon>(new Balloon(ofGetWidth()/2, ofGetHeight(), ofGetWidth()/4, physics));
+    anchor = shared_ptr<Balloon>(new Balloon(ofGetWidth()/2, ofGetHeight()/2, ofGetWidth()/200, 0.0, ofColor::lightYellow, physics));
+
+    ofEnableLighting();
+    pointLight.setPointLight();
+    pointLight.setAttenuation(0.9f);
+    pointLight.setPosition(anchor->getShape()->getPosition());
 
     soundSustained = false;
+
+    sunMat = ofMaterial();
+    sunMat.setEmissiveColor(ofFloatColor(255, 215, 0));
+
+    easyCam.setTarget(anchor->getShape()->getPosition());
+    easyCam.setFarClip(10000);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+
     physics.update();
     fftLive.update();
 
@@ -28,24 +40,26 @@ void ofApp::update(){
     soundSustained = false;
 
     for (int i = 0; i < 16; i++){
-        if (audioData[i] > 0.7){
+        if (audioData[i] > 0.6){
             //to account for small bits of sound
             soundSustained = true;
         }
-        if (audioData[i] > 0.9){
+        if (audioData[i] > 0.99){
             if (!currentCircle){
-                shared_ptr<Balloon> b(new Balloon(ofRandom(0, ofGetWidth()), ofGetHeight()/2, 1, physics));
+                ofColor color(ofRandom(0, 255), ofRandom(0, 255), ofRandom(0,255));
+                shared_ptr<Balloon> b(new Balloon(ofRandom(0, ofGetWidth()), 3*ofGetHeight()/4, 1, 3.0, color, physics));
                 objects.push_back(b);
                 currentCircle = b;
                 //cout << "NEW BALLOON!" << endl;
             }
-            currentCircle->inflate(0.5);
+            currentCircle->inflate(audioData[i]);
         }
     }
     if (!soundSustained){
         if (currentCircle){
             shared_ptr<ofxBox2dJoint> joint(new ofxBox2dJoint);
-            joint->setup(physics.getWorld(), bump->getShape()->body, currentCircle->getShape()->body);
+            // currentCircle->tieOff(physics);
+            joint->setup(physics.getWorld(), anchor->getShape()->body, currentCircle->getShape()->body);
         }
         currentCircle.reset();
     }
@@ -54,23 +68,49 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    //fftLive.draw();
+    // fftLive.draw();
+
+    easyCam.begin();
+    // ofQuaternion startRotation(90, ofVec3f(0,1,0));     //quaternion to rotate camera to start position looking straight at the anchor
+    pointLight.enable();
 
     for (int i = 0; i < objects.size(); i++){
         objects[i]->draw();
     }
-    for (int i = 0; i < joints.size(); i++){
-        ofSetHexColor(0x444342);
-        joints[i]->draw();
-    }
-    bump->draw();
+    // for (int i = 0; i < joints.size(); i++){
+    //     ofSetHexColor(0x444342);
+    //     joints[i]->draw();
+    // }
+    sunMat.begin();
+    anchor->draw();
+    sunMat.end();
+
+    ofSetColor(ofColor::white);
+
+    ofPushMatrix();
+    ofTranslate(anchor->getShape()->getPosition());
+    ofNoFill();
+    ofCircle(0, 0, 100.0);
+    ofFill();
+    ofPopMatrix();
 
     physics.drawGround();
 
+    pointLight.disable();
+    easyCam.end();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    ofVec3f lookAtDir = 9.8 * easyCam.getLookAtDir();   //sets gravity to looking direction
+    switch (key) {
+        case ' ':
+            physics.setGravity(0,0);
+            break;
+        case OF_KEY_UP:
+            physics.setGravity(lookAtDir);
+            break;
+    }
 
 }
 
@@ -113,12 +153,3 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
-
-/*void ofApp::createNewCircle(float x, float y, float r){
-    shared_ptr<ofxBox2dCircle> newCircle(new ofxBox2dCircle());
-    newCircle->setPhysics(3.0, 0.53, .1);
-    newCircle->setMassFromShape = true;
-    newCircle->setup(physics.getWorld(), x, y, r);
-    objects.push_back(newCircle);
-    currentCircle = newCircle;
-}*/

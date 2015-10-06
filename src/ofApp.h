@@ -23,14 +23,18 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		void createNewCircle(float x, float y, float r);
 
-		shared_ptr<Balloon> bump;
+		shared_ptr<Balloon> anchor;
 		bool soundSustained;
 		shared_ptr<Balloon> currentCircle;
 
+		ofLight pointLight;
 		ofxBox2d physics;
 		ofxFFTLive fftLive;
 
 		vector<shared_ptr<Balloon> > objects;
 		vector<shared_ptr<ofxBox2dJoint> > joints;
-		
+
+        ofMaterial sunMat;
+        ofEasyCam easyCam;
+
 };
