@@ -1,3 +1,6 @@
 [submodule "zaran"]
 	path = zaran
 	url = git://github.com/zlalvani/player-vs-sound.git
+[submodule "daviddominguez"]
+	path = daviddominguez
+	url = https://github.com/davidrpi/audiovisualizer
